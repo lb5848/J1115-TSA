@@ -110,7 +110,7 @@ sample_md
 sample_md[, sample_id := factor(sample_id)]
 lv <- levels(sample_md$sample_id)
 lv <- c(lv[12:21], lv[22:33], lv[1:11], lv[34:41])
-levels(sample_md$sample_id) <- lv
+sample_md[, sample_id := factor(sample_id, levels = lv)]
 sample_md[, condition := factor(condition, levels = c("baseline", "C3D14", "1year", "less3", "more4"))]
 colnames(sample_md)
 
