@@ -62,7 +62,7 @@ dir.create(outputDirectory)
 setwd(outputDirectory)
 load("workspaceFinal.rds")
 sce
-CATALYST::pbMDS(sce, by = "sample_id", color_by = "condition", features = type_markers(sce), fun = "median")
+CATALYST::pbMDS(sce, by = "sample_id", color_by = "condition", features = type_markers(sce), fun = "median", label_by = NULL)
 
 getwd()
 plotFolder <- paste(outputDirectory, "plots", sep = "/")
@@ -72,7 +72,6 @@ setwd(plotFolder)
 # plotAbundances w/ stats
 
 stat.test <- as_tibble(da)
-stat.test$cluster_id <- paste0("C", stat.test$cluster_id)
 # remove C8 - aggregates and <100 cells/1%
 stat.test[-8,]
 stat.test <- stat.test[-8,]

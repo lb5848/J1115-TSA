@@ -59,7 +59,7 @@ setwd(workingDirectory)
 # Load workspace and SCEobject
 load("workspaceSCEDA.rds")
 sce
-CATALYST::pbMDS(sce, by = "sample_id", color_by = "condition", features = type_markers(sce), fun = "median")
+CATALYST::pbMDS(sce, by = "sample_id", color_by = "condition", features = type_markers(sce), fun = "median", label_by = NULL)
 
 # Save .fcs per cluster
 outputDirectory <- getwd()
@@ -67,17 +67,24 @@ outputDirectory <- paste(outputDirectory, "output", sep = "/")
 dir.create(outputDirectory)
 setwd(outputDirectory)
 
-annotation_table <- as.data.frame(cbind(c(1:8), paste0("C", c(1:8))))
+plotClusterExprs(sce, k = "meta8", features = "type")
+
+# TNFa+ 7,8,6,2
+# IFNg+ 7,6
+# CD8+ 7,8,4,5
+# CD4+ 3,6,1,2
+# GrB+ 7,5,3,6
+annotation_table <- as.data.frame(cbind(c(1:8), 
+                                        c("CD4+ Cytokine-", "CD4+ TNFa+", "CD4+ GrB+", "CD8+ Cytokine-", "CD8+ GrB+", 
+                                          "CD4+ TNFa+ IFNg+ GrB+", "CD8+ TNFa+ IFNg+ GrB+", "CD8+ TNFa+")))
 colnames(annotation_table) <- c("meta8", "FinalClusters")
-annotation_table$FinalClusters <- factor(annotation_table$FinalClusters)
+
+annotation_table$FinalClusters <- factor(annotation_table$FinalClusters, 
+                                         levels = c("CD4+ Cytokine-", "CD4+ TNFa+", "CD4+ GrB+", "CD4+ TNFa+ IFNg+ GrB+","CD8+ Cytokine-",
+                                                    "CD8+ TNFa+", "CD8+ GrB+", "CD8+ TNFa+ IFNg+ GrB+"))
 sce <- mergeClusters(sce, k = "meta8", 
                      table = annotation_table, id = "cluster_annotation", overwrite = TRUE)
-filtered_sce <- filterSCE(sce, cluster_id %in% c(paste0("C", c(1:7))), k = "cluster_annotation")
-plotExprHeatmap(filtered_sce, features = type_markers(sce), k = "cluster_annotation", by = "cluster_id",  fun = "mean",
-                scale = "first", bars = TRUE, perc = TRUE)
-# store original_sce
-old_sce <- sce
-sce <- filtered_sce
+
 # keep_dr = TRUE not all cells have DR
 sce$cluster_annotation <- cluster_ids(sce, "cluster_annotation")
 flowSet <- sce2fcs(sce, split_by = "cluster_annotation", keep_cd = TRUE, keep_dr = FALSE, assay = "counts")
