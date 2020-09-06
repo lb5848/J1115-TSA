@@ -50,7 +50,7 @@ getwd()
 PrimaryDirectory <- getwd()
 PrimaryDirectory
 # Define workingDirectory
-wdName <- "200819_Working_DirectoryFCS"
+wdName <- "200831_Working_DirectoryFCS"
 workingDirectory <- paste(PrimaryDirectory, wdName, sep = "/")
 
 setwd(workingDirectory)
@@ -85,5 +85,5 @@ saveRDS(sce, file = "SCE_part2_DR.rds")
 CATALYST::plotDR(sce, dr = "UMAP", color_by = "meta8", facet_by = "condition")
 CATALYST::plotDR(sce, dr = "TSNE", color_by = "meta8", facet_by = "condition")
 CATALYST::plotDR(sce, dr = "DiffusionMap", color_by = "meta8", facet_by = "condition")
-CATALYST::plotDR(sce, dr = "UMAP", color_by = "CD8", facet_by = "condition")
-
+CATALYST::plotDR(sce, dr = "UMAP", color_by = "TNFa", facet_by = "condition")
+CATALYST::plotDR(sce, dr = "UMAP", color_by = "IFNg", facet_by = "condition")
