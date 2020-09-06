@@ -72,7 +72,7 @@ csv2fcsDirectory <- paste(dirDirectory, csv2fcsName, sep = "/")
 dir.create(csv2fcsDirectory)
 
 # Define workingDirectory
-wdName <- "200819_Working_DirectoryFCS"
+wdName <- "200906_Working_DirectoryFCS"
 workingDirectory <- paste(PrimaryDirectory, wdName, sep = "/")
 dir.create(workingDirectory)
 
@@ -127,13 +127,13 @@ colnames(flowSet)
 
 setwd(workingDirectory)
 
-QC_dir <- "QC"
-if(!dir.exists(QC_dir)){
-  dir.create(QC_dir)
-  dir.create(file.path(QC_dir, "flowAI"))
-  dir.create(file.path(QC_dir, "PeacoQC"))
-}
-
+# QC_dir <- "QC"
+# if(!dir.exists(QC_dir)){
+#   dir.create(QC_dir)
+#   dir.create(file.path(QC_dir, "flowAI"))
+#   dir.create(file.path(QC_dir, "PeacoQC"))
+# }
+# 
 # fs <- flowCore::fsApply(flowSet, function(ff){
 #   resQC_AI <- flow_auto_qc(fcsfiles = ff,
 #                         folder_results = file.path(QC_dir, paste("flowAI", gsub(".fcs", " Folder", ff@description$GUID), sep = "/")),
@@ -158,7 +158,7 @@ fs[[1]]@description$`$CYT` <- "FACS"
 
 chs_of_interest <- colnames(fs)[5:13]
 plot_aggregate(fs, channels = chs_of_interest, output_image = "FCSpreNorm.png")
-normFlowSet <- warpSet(fs, stains = colnames(fs)[5:12])
+normFlowSet <- warpSet(fs, stains = colnames(fs)[5])
 plot_aggregate(normFlowSet, channels = chs_of_interest, output_image = "FCSpostNorm.png")
 
 normFlowSet[[1]]@description$`$CYT`
