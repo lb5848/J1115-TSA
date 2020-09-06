@@ -50,7 +50,7 @@ getwd()
 PrimaryDirectory <- getwd()
 PrimaryDirectory
 # Define workingDirectory
-wdName <- "200831_Working_DirectoryFCS"
+wdName <- "200906_Working_DirectoryFCS"
 workingDirectory <- paste(PrimaryDirectory, wdName, sep = "/")
 
 setwd(workingDirectory)
@@ -76,7 +76,7 @@ sce <- runDR(sce, dr = "TSNE", cells = n_cells, features = "type", theta = 0.5, 
              distMethod = "euclidean",
              PCA = TRUE, eta = eta, exaggeration_factor = 12.0)
 sce <- runDR(sce, dr =  "UMAP", cells = n_cells, features = "type")
-sce <- runDR(sce, dr = "DiffusionMap", cells = n_cells, features = "type", assay = "exprs")
+# sce <- runDR(sce, dr = "DiffusionMap", cells = n_cells, features = "type", assay = "exprs")
 
 saveRDS(sce, file = "SCE_part2_DR.rds")
 

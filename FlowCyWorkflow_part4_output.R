@@ -51,7 +51,7 @@ getwd()
 PrimaryDirectory <- getwd()
 PrimaryDirectory
 # Define workingDirectory
-wdName <- "200819_Working_DirectoryFCS"
+wdName <- "200906_Working_DirectoryFCS"
 workingDirectory <- paste(PrimaryDirectory, wdName, sep = "/")
 
 setwd(workingDirectory)
@@ -67,23 +67,10 @@ outputDirectory <- paste(outputDirectory, "output", sep = "/")
 dir.create(outputDirectory)
 setwd(outputDirectory)
 
-plotClusterExprs(sce, k = "meta8", features = "type")
-
-# TNFa+ 7,8,6,2
-# IFNg+ 7,6
-# CD8+ 7,8,4,5
-# CD4+ 3,6,1,2
-# GrB+ 7,5,3,6
-annotation_table <- as.data.frame(cbind(c(1:8), 
-                                        c("CD4+ Cytokine-", "CD4+ TNFa+", "CD4+ GrB+", "CD8+ Cytokine-", "CD8+ GrB+", 
-                                          "CD4+ TNFa+ IFNg+ GrB+", "CD8+ TNFa+ IFNg+ GrB+", "CD8+ TNFa+")))
-colnames(annotation_table) <- c("meta8", "FinalClusters")
-
-annotation_table$FinalClusters <- factor(annotation_table$FinalClusters, 
-                                         levels = c("CD4+ Cytokine-", "CD4+ TNFa+", "CD4+ GrB+", "CD4+ TNFa+ IFNg+ GrB+","CD8+ Cytokine-",
-                                                    "CD8+ TNFa+", "CD8+ GrB+", "CD8+ TNFa+ IFNg+ GrB+"))
-sce <- mergeClusters(sce, k = "meta8", 
-                     table = annotation_table, id = "cluster_annotation", overwrite = TRUE)
+plotClusterExprs(sce, k = "cluster_annotation", features = "type")
+plotExprHeatmap(sce, features = type_markers(sce), k = "cluster_annotation", by = "cluster_id",
+                 scale = "last", bars = TRUE, perc = TRUE, fun = "mean")
+plotAbundances(sce, k = "cluster_annotation", by = "cluster_id")
 
 # keep_dr = TRUE not all cells have DR
 sce$cluster_annotation <- cluster_ids(sce, "cluster_annotation")
