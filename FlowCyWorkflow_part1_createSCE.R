@@ -162,7 +162,7 @@ normFlowSet <- warpSet(fs, stains = colnames(fs)[5])
 plot_aggregate(normFlowSet, channels = chs_of_interest, output_image = "FCSpostNorm.png")
 
 normFlowSet[[1]]@description$`$CYT`
-
+panel$marker_class[11] <- "state"
 sce <- CATALYST::prepData(normFlowSet, panel = panel, md = sample_md, transform = FALSE)
 assay(sce, "exprs") <- assay(sce, "counts")
 assays(sce)
